@@ -1,8 +1,12 @@
 #!/usr/bin/python3
-def compute():
+import os
+import Database as DB
+
+
+def compute(userNodes, daysToCalculate):
     r = .092
-    n = int(input("Please input the number of nodes you have: "))
-    d = input("Please input the number of days you would like to calculate: ")
+    n = userNodes
+    d = daysToCalculate
     b = 0
     c = 0
     day = 0
@@ -15,6 +19,7 @@ def compute():
             buyList.append(day)
             b = b - 10
         b = b + c
-        print("On day", day, "You made", c, "Strong coin today!", "Your total coin is:", b, ".", "You have a total of", n, "nodes.")
-    print("Your days to buy more nodes are", buyList)
-compute()
+        calcRow = [day, c, b, n]
+        DB.ItemCreationProcesses.createCalc(calcRow)
+        
+    

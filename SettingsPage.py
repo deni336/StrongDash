@@ -5,9 +5,9 @@ import GUI as G
 
 class SettingsPage(G.GUI):
     
-    def __init__(self, parent):
+    def __init__(self, parent, controller):
 
-        G.__init__(self, parent)
+        G.GUI.__init__(self, parent)
 
         label1 = tk.Label(self.mainFrame, font=("Arial", 20),
                         text="Settings", background="#4b4b4b",

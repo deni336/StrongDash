@@ -1,5 +1,9 @@
 import tkinter as tk
 
+frameStyles = {"relief": "groove",
+               "bd": 3, "bg": "#4b4b4b",
+               "fg": "blue", "font": ("Arial", 12, "bold")}
+
 class GUI(tk.Frame):
     
     def __init__(self, parent):

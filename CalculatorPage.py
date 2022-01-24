@@ -1,9 +1,9 @@
-import imp
 import tkinter as tk
 from tkinter import ttk
 from tkinter.ttk import Entry
 import GUI as G
 import StrCalc as SC
+import Database as DB
 
 frameStyles = {"relief": "groove",
                "bd": 3, "bg": "#4b4b4b",
@@ -11,7 +11,7 @@ frameStyles = {"relief": "groove",
 
 class CalculatorPage(G.GUI):
     
-    def __init__(self, parent):
+    def __init__(self, parent, controller):
 
         G.GUI.__init__(self, parent)
 
@@ -30,14 +30,27 @@ class CalculatorPage(G.GUI):
         daysToCalculate = Entry(frame2)
         daysToCalculate.insert(tk.END, "Days to Calculate")
         daysToCalculate.place(rely=0.10, relx=0.01)
+
+        def calcEntryFunc():
+            deleteTablefunc()
+            nodes = userNodes.get()
+            days = daysToCalculate.get()
+            SC.compute(int(nodes), int(days))
+            loadData()
+
+        def deleteTablefunc():
+            DB.ItemDeleteProcesses.deleteTable()
+            tv1.delete(*tv1.get_children())
+            DB.DatabaseCreationProcess.createDatabase()
+
         writeBtn = ttk.Button(frame2, text="Submit",
-                                  command=lambda: SC.compute(userNodes, daysToCalculate))
+                                  command=lambda: calcEntryFunc())
         writeBtn.place(rely=0.90, relx=0.70)
-        closeBtn = ttk.Button(frame2, text="Clear")
-        closeBtn.place(rely=0.90, relx=0.85)
+        clearBtn = ttk.Button(frame2, text="Clear", command=lambda: deleteTablefunc())
+        clearBtn.place(rely=0.90, relx=0.85)
 
         tv1 = ttk.Treeview(frame1)
-        columnListAccount = ("Day", "Coin/day", "Total/coin", "Total Nodes", "Nodes Purchased")
+        columnListAccount = ("Day", "Coin/day", "Total/coin", "Total Nodes")
         tv1['columns'] = columnListAccount
         tv1['show'] = "headings"
         for column in columnListAccount:
@@ -48,3 +61,8 @@ class CalculatorPage(G.GUI):
         treeScrollY.configure(command=tv1.yview)
         tv1.configure(yscrollcommand=treeScrollY.set)
         treeScrollY.pack(side="right", fill="y")
+
+        def loadData():
+            calcTable = DB.ItemReadProcesses.readCalc(self)
+            for row in calcTable:
+                tv1.insert("", "end", values=row)
