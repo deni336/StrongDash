@@ -4,13 +4,15 @@ from tkinter import ttk
 from tkinter import messagebox
 from tkinter.ttk import Entry
 import StrCalc as SC
+import GUI as G
+import CalculatorPage as CP
+import SettingsPage as SP
 
-frameStyles = {"relief": "groove",
-               "bd": 3, "bg": "#4b4b4b",
-               "fg": "blue", "font": ("Arial", 12, "bold")}
+
+
 
 class FullScreenApp(object):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master):
         self.master = master
         pad = 3
         self._geom = '200x200+0+0'
@@ -36,12 +38,12 @@ class MyApp(tk.Tk):
         mainFrame.grid_columnconfigure(0, weight=1)
         self.geometry("1024x600")
         self.frames = {}
-        pages = (CalculatorPage, SettingsPage)
+        pages = (CP.CalculatorPage, SP.SettingsPage)
         for F in pages:
             frame = F(mainFrame, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-        self.showFrame(CalculatorPage)
+        self.showFrame(CP)
         menuBar = MenuBar(self)
         tk.Tk.config(self, menu=menuBar)
 
@@ -58,26 +60,16 @@ class MenuBar(tk.Menu):
 
         menu_file = tk.Menu(self, tearoff=0)
         self.add_cascade(label="Menu", menu=menu_file)
-        # menu_file.add_command(label="Welcome",
-        # command=lambda: parent.showFrame(WelcomePage))
         menu_file.add_command(label="Calculator",
-                              command=lambda: parent.showFrame(CalculatorPage))
-        # menu_file.add_command(label="Visual",
-        # command=lambda: parent.showFrame(VisualPage))
-        # menu_file.add_command(label="Reports",
-        # command=lambda: parent.showFrame(ReportsPage))
+                              command=lambda: parent.showFrame(CP))
         menu_file.add_command(label="Settings",
-                              command=lambda: parent.showFrame(SettingsPage))
+                              command=lambda: parent.showFrame(SP))
         menu_file.add_separator()
         menu_file.add_command(label="Exit Application",
                               command=lambda: parent.quitApplication())
         help_file = tk.Menu(self, tearoff=0)
         self.add_cascade(label="Help", menu=help_file)
-        # help_file.add_command(label="ReadMe",
-        #                       command=lambda:
-        #                           PC.ItemViewProcesses.viewReadme(self))
 
-class GUI(tk.Frame):
     
     def __init__(self, parent):
 
@@ -88,20 +80,19 @@ class GUI(tk.Frame):
         self.mainFrame.grid_rowconfigure(0, weight=1)
         self.mainFrame.grid_columnconfigure(0, weight=1)
 
-class CalculatorPage(GUI):
-    
-    def __init__(self, parent, controller):
 
-        GUI.__init__(self, parent)
+    def __init__(self, parent):
+
+        G.GUI.__init__(self, parent)
 
         label1 = tk.Label(self.mainFrame, font=("Arial", 20),
                           text="Calculator", background="#4b4b4b",
                           foreground="blue")
         label1.pack(side="top")
 
-        frame1 = tk.LabelFrame(self.mainFrame, frameStyles, text="Calculator Output")
+        frame1 = tk.LabelFrame(self.mainFrame, G.frameStyles, text="Calculator Output")
         frame1.place(rely=0.05, relx=0.58, height=800, width=800)
-        frame2 = tk.LabelFrame(self.mainFrame, frameStyles, text="Calculator Input")
+        frame2 = tk.LabelFrame(self.mainFrame, G.frameStyles, text="Calculator Input")
         frame2.place(rely=0.05, relx=0.02, height=400, width=600)
         userNodes = Entry(frame2)
         userNodes.insert(tk.END, "Number of Nodes")
@@ -128,16 +119,6 @@ class CalculatorPage(GUI):
         tv1.configure(yscrollcommand=treeScrollY.set)
         treeScrollY.pack(side="right", fill="y")
 
-class SettingsPage(GUI):
-
-    def __init__(self, parent, controller):
-
-        GUI.__init__(self, parent)
-
-        label1 = tk.Label(self.mainFrame, font=("Arial", 20),
-                        text="Settings", background="#4b4b4b",
-                        foreground="blue")
-        label1.pack(side="top")
 
 
 root = MyApp()
