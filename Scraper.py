@@ -12,39 +12,30 @@ from bs4 import BeautifulSoup
 class Scraper():
     @classmethod
     def process(self, url):
-        
         r = requests.get(url)
         soup = BeautifulSoup(r.text, 'lxml')
         data = []
         table = soup.find('table', id='')
-        for row in table.find_all('tr'):
-            para = soup.has_attr('class') and row['class'][0] == 'sc-1eb5slv-0'
-            print(para)
-            f = open('ScrapedData.csv', 'w')
-            with f:
-                writer = csv.writer(f)
-                writer.writerow(row)
+        for row in table.find_all('h1'):
             cells = row.findChildren('td')
             values = []
             for cell in cells:
                 value = cell.string
                 values.append(value)
-                print(cell)
-        
             try:
-                Bitcoin = values[0]
-                #Price = values[1]
+                Date = values[0]
+                Open = values[1]
                 High = values[2]
-                Price =  values[3]
+                Low =  values[3]
                 Close = values[4]
                 Volume = values[5]
                 MarketCap = values[6]
-            except IndexError as e:
-                print(e)
+            except IndexError:
                 continue
-            data.append([Bitcoin, Price, High, Price, Close, Volume, MarketCap])
+            data.append([Date, Open, High, Low, Close, Volume, MarketCap])
         # Print data
-        # for item in data:
-        #     print(item)
+        for item in data:
+            print(item)
         return data
-        
+
+    

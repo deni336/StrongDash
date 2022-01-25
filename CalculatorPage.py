@@ -10,7 +10,19 @@ frameStyles = {"relief": "groove",
                "bd": 3, "bg": "#4b4b4b",
                "fg": "blue", "font": ("Arial", 12, "bold")}
 
-url = "https://coinmarketcap.com/"
+bitUrl = "https://coinmarketcap.com/currencies/bitcoin"
+ethUrl = "https://coinmarketcap.com/currencies/ethereum/"
+strUrl = "https://coinmarketcap.com/currencies/strong/"
+bnbUrl = "https://coinmarketcap.com/currencies/bnb/"
+tthUrl = "https://coinmarketcap.com/currencies/tether/"
+dogUrl = "https://coinmarketcap.com/currencies/dogecoin/"
+polUrl = "https://coinmarketcap.com/currencies/polygon/"
+shiUrl = "https://coinmarketcap.com/currencies/shiba-inu/"
+lteUrl = "https://coinmarketcap.com/currencies/litecoin/"
+algUrl = "https://coinmarketcap.com/currencies/algorand/"
+
+urlList = [bitUrl, ethUrl, strUrl, bnbUrl, tthUrl, dogUrl, polUrl, shiUrl, lteUrl, algUrl]
+
 
 class CalculatorPage(G.GUI):
     
@@ -87,9 +99,10 @@ class CalculatorPage(G.GUI):
         treeScrollY.pack(side="right", fill="y")
         
         def invokeScrape():
-            data = SP.Scraper.process(url)
-            for row in data:
-                tv2.insert("", "end", values=row)
+            for url in urlList:
+                data = SP.Scraper.process(url)
+                for row in data:
+                    tv2.insert("", "end", values=row)
         invokeScrape()
         
         
