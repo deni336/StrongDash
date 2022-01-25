@@ -4,10 +4,13 @@ from tkinter.ttk import Entry
 import GUI as G
 import StrCalc as SC
 import Database as DB
+import Scraper as SP
 
 frameStyles = {"relief": "groove",
                "bd": 3, "bg": "#4b4b4b",
                "fg": "blue", "font": ("Arial", 12, "bold")}
+
+url = "https://coinmarketcap.com/"
 
 class CalculatorPage(G.GUI):
     
@@ -21,7 +24,7 @@ class CalculatorPage(G.GUI):
         label1.pack(side="top")
 
         frame1 = tk.LabelFrame(self.mainFrame, G.frameStyles, text="Calculator Output")
-        frame1.place(rely=0.05, relx=0.58, height=800, width=800)
+        frame1.place(rely=0.05, relx=0.58, height=820, width=800)
         frame2 = tk.LabelFrame(self.mainFrame, G.frameStyles, text="Calculator Input")
         frame2.place(rely=0.05, relx=0.02, height=400, width=600)
         userNodes = Entry(frame2)
@@ -36,7 +39,7 @@ class CalculatorPage(G.GUI):
             nodes = userNodes.get()
             days = daysToCalculate.get()
             SC.compute(int(nodes), int(days))
-            loadData()
+            tv1LoadData()
 
         def deleteTablefunc():
             DB.ItemDeleteProcesses.deleteTable()
@@ -62,7 +65,34 @@ class CalculatorPage(G.GUI):
         tv1.configure(yscrollcommand=treeScrollY.set)
         treeScrollY.pack(side="right", fill="y")
 
-        def loadData():
+        def tv1LoadData():
             calcTable = DB.ItemReadProcesses.readCalc(self)
             for row in calcTable:
                 tv1.insert("", "end", values=row)
+                
+        frame3 = tk.LabelFrame(self.mainFrame, G.frameStyles, text="Market Data")
+        frame3.place(rely=0.45, relx=0.02, height=400, width=600)
+        
+        tv2 = ttk.Treeview(frame3)
+        columnListAccount = ("Coin", "Price", "High", "Low", "Close", "Volume", "MarketCap")
+        tv2['columns'] = columnListAccount
+        tv2['show'] = "headings"
+        for column in columnListAccount:
+            tv2.heading(column, text=column)
+            tv2.column(column, width=50)
+        tv2.place(relheight=1, relwidth=.995)
+        treeScrollY = tk.Scrollbar(frame3)
+        treeScrollY.configure(command=tv2.yview)
+        tv2.configure(yscrollcommand=treeScrollY.set)
+        treeScrollY.pack(side="right", fill="y")
+        
+        def invokeScrape():
+            data = SP.Scraper.process(url)
+            for row in data:
+                tv2.insert("", "end", values=row)
+        invokeScrape()
+        
+        
+            
+            
+        

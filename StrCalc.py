@@ -11,6 +11,7 @@ def compute(userNodes, daysToCalculate):
     c = 0
     day = 0
     buyList = []
+    massList = []
     for i in range(0, int(d)):
         c = float(n) * r
         day = day + 1
@@ -20,6 +21,7 @@ def compute(userNodes, daysToCalculate):
             b = b - 10
         b = b + c
         calcRow = [day, c, b, n]
-        DB.ItemCreationProcesses.createCalc(calcRow)
+        massList.append(calcRow)
+    DB.ItemCreationProcesses.createCalc(massList)
         
     

@@ -13,9 +13,11 @@ def createConnection(db_file):
         print(e)
 
 class DatabaseCreationProcess:
-    def __init__(self, createDatabase) -> None:
-        self.createDatabase = createDatabase
-    def createDatabase():
+    def __init__(self, createCalcDatabase, createMarketDatabase) -> None:
+        self.createCalcDatabase = createCalcDatabase
+        self.createMarketDatabase = createMarketDatabase
+
+    def createCalcDatabase():
         conn = createConnection(database)
         cur = conn.cursor()
         cur.execute('''CREATE TABLE IF NOT EXISTS CALC
@@ -25,27 +27,44 @@ class DatabaseCreationProcess:
                           TOTAL_NODES INT NOT NUll);''')
         conn.commit()
         conn.close()
-        
-    createDatabase()
+    createCalcDatabase()
+    
+    def createMarketDatabase():
+        conn = createConnection(database)
+        cur = conn.cursor()
+        cur.execute('''CREATE TABLE IF NOT EXISTS MARKET
+                    (COIN TEXT NOT NULL,
+                    PRICE REAL NOT NULL,
+                    VOLUME REAL NOT NULL,
+                    CHANGE REAL NOT NULL);''')
+        conn.commit()
+        conn.close
+    createMarketDatabase()
 
 class ItemCreationProcesses():
 
     def __init__(self, createCalc) -> None:
         self.createCalc = createCalc
 
-    def createCalc(calcRow):
+    def createCalc(massList):
         conn = createConnection(database)
-        try:
+        for i in massList: 
             sql = '''INSERT INTO CALC (DAY, COIN_PER_DAY, TOTAL_COIN, TOTAL_NODES)
                     VALUES (?,?,?,?)'''
             cur = conn.cursor()
-            cur.execute(sql, calcRow)
-            conn.commit()
-            conn.close()
-            
-        except Error as e:
-            print(e)
-        return cur.lastrowid
+            cur.execute(sql, i)
+        conn.commit()
+        conn.close()
+        
+    def createMarketData(massList):
+        conn = createConnection(database)
+        for i in massList: 
+            sql = '''INSERT INTO CALC (COIN, PRICE, VOLUME, CHANGE)
+                    VALUES (?,?,?,?)'''
+            cur = conn.cursor()
+            cur.execute(sql, i)
+        conn.commit()
+        conn.close()
 
 class ItemReadProcesses():
 
