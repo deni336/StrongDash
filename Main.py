@@ -6,8 +6,8 @@ from tkinter.ttk import Entry
 import StrCalc as SC
 import GUI as G
 import CalculatorPage as CP
-import SettingsPage as SP
 import Database as DB
+import SettingsPage as SP
 
 
 
@@ -62,8 +62,7 @@ class MenuBar(tk.Menu):
         self.add_cascade(label="Menu", menu=menu_file)
         menu_file.add_command(label="Calculator",
                               command=lambda: parent.showFrame(CP.CalculatorPage))
-        # menu_file.add_command(label="Settings",
-        #                       command=lambda: parent.showFrame(SP.SettingsPage))
+        
         menu_file.add_separator()
         menu_file.add_command(label="Exit Application",
                               command=lambda: parent.quitApplication())
