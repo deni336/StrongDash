@@ -38,6 +38,9 @@ class CalculatorPage(G.GUI):
         rewardRate = Entry(frame2)
         rewardRate.insert(tk.END, "Reward Rate")
         rewardRate.place(rely=0.20, relx=0.01)
+        amountToRemove = Entry(frame2)
+        amountToRemove.insert(tk.END, "Profits to Remove")
+        amountToRemove.place(rely=0.25, relx=0.01)
         userNodes1 = Entry(frame2)
         userNodes1.insert(tk.END, "Number of Nodes")
         userNodes1.place(rely=0.60, relx=0.01)
@@ -50,6 +53,7 @@ class CalculatorPage(G.GUI):
         rewardRate1 = Entry(frame2)
         rewardRate1.insert(tk.END, "Reward Rate")
         rewardRate1.place(rely=0.75, relx=0.01)
+        
 
         def calcEntryFunc():
             deleteTablefunc()
@@ -57,7 +61,8 @@ class CalculatorPage(G.GUI):
             days = daysToCalculate.get()
             coin = coinCompound.get()
             reward = rewardRate.get()
-            SC.compute(int(nodes), int(days), float(coin), float(reward))
+            amount = amountToRemove.get()
+            SC.compute(int(nodes), int(days), float(coin), float(reward), float(amount))
             tv1LoadData()
 
         def deleteTablefunc():

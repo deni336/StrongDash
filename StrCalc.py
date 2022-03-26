@@ -4,7 +4,7 @@ import os
 import Database as DB
 
 
-def compute(userNodes, daysToCalculate, coinCompound, rewardRate):
+def compute(userNodes, daysToCalculate, coinCompound, rewardRate, amountToRemove):
     b = 0
     c = 0
     day = 0
@@ -17,6 +17,7 @@ def compute(userNodes, daysToCalculate, coinCompound, rewardRate):
             userNodes = userNodes + 1
             buyList.append(day)
             b = b - 10
+            b = b - amountToRemove
         b = b + c
         calcRow = [day, c, b, userNodes]
         massList.append(calcRow)
